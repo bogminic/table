@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { File } from '../../model/file';
+import { File } from './home-page.types';
 
 @Component({
   selector: 'app-home-page',
