@@ -9,7 +9,7 @@
   <thead>
     <tr>
       @for (header of colDefs(); track $index) {
-      <th scope="col" id="col-{{ $index }}" aria-sort="none">{{ header.headerName }}</th>
+      <th scope="col" id="col-{{ $index }}" [style.width]="header.width"  aria-sort="none">{{ header.headerName }}</th>
       }
     </tr>
   </thead>

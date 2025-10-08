@@ -56,7 +56,7 @@ export class HomePage {
   columnDefs: ColDef[] = [
     { field: 'name', headerName: 'Name' },
     { field: 'device', headerName: 'Device' },
-    { field: 'path', headerName: 'Path' },
+    { field: 'path', headerName: 'Path', width: '50%' },
     { field: 'status', headerName: 'Status' },
   ];
 }

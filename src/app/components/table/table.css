@@ -1,0 +1,29 @@
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  background-color: #fff;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+thead {
+  font-size: var(--font-size-large);
+}
+
+th {
+  font-weight: normal;
+}
+
+th,
+td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+tr:hover {
+  background-color: var(--border-hover-color);
+}
