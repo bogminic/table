@@ -57,6 +57,6 @@ export class HomePage {
     { field: 'name', headerName: 'Name' },
     { field: 'device', headerName: 'Device' },
     { field: 'path', headerName: 'Path', width: '50%' },
-    { field: 'status', headerName: 'Status' },
+    { field: 'status', headerName: 'Status', valueFormatting: (value) => (value === 'available' ? '🟢 Available' : 'Scheduled') },
   ];
 }

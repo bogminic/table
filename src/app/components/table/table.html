@@ -21,7 +21,7 @@
     } @else { @for (row of rowData(); track $index) {
     <tr>
       @for (col of colDefs(); track $index) {
-      <td headers="col-{{ $index }}">{{row[col.field] }}</td>
+      <td headers="col-{{ $index }}">{{col.valueFormatting ? col.valueFormatting(row[col.field]) : row[col.field]}}</td>
       }
     </tr>
     } }
