@@ -1,0 +1,29 @@
+<table [attr.aria-label]="title() ? 'Data table of ' + title() : null">
+  @if (description()) {
+  <caption>
+    {{
+      description()
+    }}
+  </caption>
+  }
+  <thead>
+    <tr>
+      @for (header of colDefs(); track $index) {
+      <th scope="col" id="col-{{ $index }}" aria-sort="none">{{ header.headerName }}</th>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @if (!rowData() || rowData().length === 0) {
+    <tr class="no-data-row">
+      <td [attr.colspan]="colDefs().length" class="no-data-cell">No data available</td>
+    </tr>
+    } @else { @for (row of rowData(); track $index) {
+    <tr>
+      @for (col of colDefs(); track $index) {
+      <td headers="col-{{ $index }}">{{row[col.field] }}</td>
+      }
+    </tr>
+    } }
+  </tbody>
+</table>

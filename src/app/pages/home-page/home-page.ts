@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { File } from './home-page.types';
+import { Table } from '../../components/table/table';
+import { ColDef } from '../../components/table/table.types';
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  imports: [Table],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
@@ -50,5 +52,11 @@ export class HomePage {
       path: '\\Device\\HarddiskVolume1\\temp\\7za.exe',
       status: 'scheduled',
     },
+  ];
+  columnDefs: ColDef[] = [
+    { field: 'name', headerName: 'Name' },
+    { field: 'device', headerName: 'Device' },
+    { field: 'path', headerName: 'Path' },
+    { field: 'status', headerName: 'Status' },
   ];
 }
