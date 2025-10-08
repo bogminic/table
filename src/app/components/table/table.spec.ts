@@ -97,4 +97,12 @@ describe('Table', () => {
 
     expect(descriptionElement).toBe(null);
   });
+
+  it('it should format cell value when valueFormatting function is provided in colDef', () => {
+    fixture.componentRef.setInput('colDefs', [{ field: 'name', headerName: 'Name', valueFormatting: (value: string) => `Formatted: ${value}` }]);
+    fixture.detectChanges();
+
+    const cellElement = fixture.nativeElement.querySelector('td');
+    expect(cellElement.textContent).toBe('Formatted: Test Row');
+  });
 });
