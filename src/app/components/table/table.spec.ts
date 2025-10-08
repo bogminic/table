@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Table } from './table';
+import { Component, input } from '@angular/core';
+import { CellComponentInterface } from './table.types';
 
 describe('Table', () => {
   let component: Table;
@@ -27,7 +29,7 @@ describe('Table', () => {
 
     expect(rowElement).toBeTruthy();
     expect(rowElement.cells.length).toBe(1);
-    expect(rowElement.cells[0].textContent).toBe('Test Row');
+    expect(rowElement.cells[0].textContent).toContain('Test Row');
   });
 
   it('should display colDefs in table header', () => {
@@ -88,7 +90,7 @@ describe('Table', () => {
     fixture.detectChanges();
     const descriptionElement = fixture.nativeElement.querySelector('table caption');
 
-    expect(descriptionElement.textContent).toBe(' This is a test table ');
+    expect(descriptionElement.textContent).toContain('This is a test table');
   });
 
   it('should not display caption if description is not provided', () => {
@@ -103,6 +105,23 @@ describe('Table', () => {
     fixture.detectChanges();
 
     const cellElement = fixture.nativeElement.querySelector('td');
-    expect(cellElement.textContent).toBe('Formatted: Test Row');
+    expect(cellElement.textContent).toContain('Formatted: Test Row');
+  });
+
+  it('it should display cell component when cellComponent is provided in colDef', () => {
+    @Component({
+      selector: 'app-mock-cell',
+      template: `<span class="mock-cell">{{ value() }}</span>`
+    })
+    class MockCellComponent implements CellComponentInterface {
+      value = input.required<string>();
+    }
+
+    fixture.componentRef.setInput('colDefs', [{ field: 'name', headerName: 'Name', cellComponent: MockCellComponent }]);
+    fixture.detectChanges();
+
+    const cellElement = fixture.nativeElement.querySelector('td .mock-cell');
+    expect(cellElement).toBeTruthy();
+    expect(cellElement.textContent).toContain('Test Row');
   });
 });

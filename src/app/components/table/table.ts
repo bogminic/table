@@ -1,9 +1,10 @@
 import { Component, input } from '@angular/core';
 import { ColDef, TableRow } from './table.types';
+import { NgComponentOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-table',
-  imports: [],
+  imports: [NgComponentOutlet],
   templateUrl: './table.html',
   styleUrl: './table.css'
 })

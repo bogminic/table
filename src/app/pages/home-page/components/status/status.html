@@ -1,0 +1,7 @@
+@if (value() === 'available') {
+<span class="available">
+  {{ value() | titlecase }}
+</span>
+} @else {
+{{ value() | titlecase }}
+}

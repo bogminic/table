@@ -1,0 +1,15 @@
+.available {
+  position: relative;
+}
+
+.available::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  background-color: var(--accent-green);
+  border-radius: 50%;
+}

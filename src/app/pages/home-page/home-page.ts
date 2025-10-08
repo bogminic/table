@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { File } from './home-page.types';
 import { Table } from '../../components/table/table';
 import { ColDef } from '../../components/table/table.types';
+import { Status } from './components/status/status';
 
 @Component({
   selector: 'app-home-page',
@@ -57,6 +58,6 @@ export class HomePage {
     { field: 'name', headerName: 'Name' },
     { field: 'device', headerName: 'Device' },
     { field: 'path', headerName: 'Path', width: '50%' },
-    { field: 'status', headerName: 'Status', valueFormatting: (value) => (value === 'available' ? '🟢 Available' : 'Scheduled') },
+    { field: 'status', headerName: 'Status', cellComponent: Status },
   ];
 }
