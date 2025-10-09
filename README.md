@@ -38,6 +38,8 @@ To generate a **code coverage report**, run:
 ng test --no-watch --code-coverage
 ```
 
+You can view the coverage details in `coverage/table/index.html`.
+
 ## 🧩 Table Component
 
 The **`Table`** component is a reusable, accessible, and flexible Angular table that supports configurable columns, selectable rows, and custom cell rendering.  
@@ -185,4 +187,3 @@ export class StatusBadgeComponent {
 - **Visual feedback:** Hover, selected, and focus styles included  
 
 ---
-
