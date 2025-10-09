@@ -1,8 +1,43 @@
 .container {
-    min-height: 100dvh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 60dvw;
-    margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60dvw;
+  margin: 0 auto;
+}
+
+.content {
+  position: relative;
+}
+
+.button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-large);
+  position: absolute;
+  top: calc(1.5rem + 2px);
+  left: 15rem;
+  color: var(--grey-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  background: var(--grey);
+}
+
+.button:hover {
+  background: var(--grey-lighter);
+}
+
+.icon {
+  width: 1.875rem;
+  height: 1.875rem;
 }

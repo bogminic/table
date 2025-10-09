@@ -1,11 +1,17 @@
-<section class="container">
-  <app-table
-    [rowData]="files"
-    [colDefs]="columnDefs"
-    [title]="'List of files'"
-    [rowSelection]="true"
-    [description]="'List of files with their device, path, and current status'"
-    [selectableRowFn]="this.selectableRow"
-    (selectedRowsChange)="onSelectedRowsChange($event)"
-  ></app-table>
-</section>
+<main class="container">
+  <section class="content">
+    <button class="button" (click)="downloadSelected()" type="button" [disabled]="isDownloadDisabled">
+      <img class="icon" src="download.svg" alt="Download icon" />
+      Download Selected
+    </button>
+    <app-table
+      [rowData]="files"
+      [colDefs]="columnDefs"
+      [title]="'List of files'"
+      [rowSelection]="true"
+      [description]="'List of files with their device, path, and current status'"
+      [selectableRowFn]="this.selectableRow"
+      (selectedRowsChange)="onSelectedRowsChange($event)"
+    ></app-table>
+  </section>
+</main>

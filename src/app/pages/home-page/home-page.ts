@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { File } from './home-page.types';
 import { Table } from '../../components/table/table';
 import { ColDef, TableRow } from '../../components/table/table.types';
@@ -11,7 +11,9 @@ import { Status } from './components/status/status';
   styleUrl: './home-page.css',
 })
 export class HomePage {
-  files: File[] = [
+
+  // Table data
+  public files: File[] = [
     {
       name: 'smss.exe',
       device: 'Mario',
@@ -55,16 +57,32 @@ export class HomePage {
     },
   ];
 
-  columnDefs: ColDef[] = [
+  // Table column definitions
+  public columnDefs: ColDef[] = [
     { field: 'name', headerName: 'Name' },
     { field: 'device', headerName: 'Device' },
     { field: 'path', headerName: 'Path', width: '50%' },
     { field: 'status', headerName: 'Status', cellComponent: Status },
   ];
 
-  selectableRow = (row: TableRow): boolean => row['status'] === 'available';
+  // Predicate to determine if a row is selectable
+  readonly selectableRow = (row: TableRow): boolean => row['status'] === 'available';
 
-  onSelectedRowsChange(selectedRows: Set<TableRow>) {
-    console.log('Selected Rows:', selectedRows);
+  // Signal to hold selected rows
+  selectedRows = signal<Set<TableRow>>(new Set());
+
+  // Handler for when selected rows change
+  public onSelectedRowsChange(selectedRows: Set<TableRow>) {
+    this.selectedRows.set(selectedRows);
+  }
+
+  // Handler for downloading selected files
+  public downloadSelected() {
+    const selectedFiles = Array.from(this.selectedRows()).map(row => `Device: ${row['device']}, Path: ${row['path']}`);
+    alert('Downloading selected files:\n' + selectedFiles.join('\n'));
+  }
+
+  get isDownloadDisabled(): boolean {
+    return this.selectedRows().size === 0;
   }
 }
