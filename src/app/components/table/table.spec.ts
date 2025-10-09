@@ -38,7 +38,7 @@ describe('Table', () => {
 
     expect(headerElement).toBeTruthy();
     expect(headerElement.cells.length).toBe(1);
-    expect(headerElement.cells[0].textContent).toBe('Name');
+    expect(headerElement.cells[0].textContent).toContain('Name');
   });
 
   it('should display no data message when rowData is empty', () => {
@@ -47,7 +47,7 @@ describe('Table', () => {
     const noDataElement = fixture.nativeElement.querySelector('table tbody tr td');
 
     expect(noDataElement).toBeTruthy();
-    expect(noDataElement.textContent).toBe('No data available');
+    expect(noDataElement.textContent).toContain('No data available');
   });
 
   it('should table header be displayed with accessibility in mind', () => {

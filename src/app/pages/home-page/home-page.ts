@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { File } from './home-page.types';
 import { Table } from '../../components/table/table';
-import { ColDef } from '../../components/table/table.types';
+import { ColDef, TableRow } from '../../components/table/table.types';
 import { Status } from './components/status/status';
 
 @Component({
@@ -54,10 +54,17 @@ export class HomePage {
       status: 'scheduled',
     },
   ];
+
   columnDefs: ColDef[] = [
     { field: 'name', headerName: 'Name' },
     { field: 'device', headerName: 'Device' },
     { field: 'path', headerName: 'Path', width: '50%' },
     { field: 'status', headerName: 'Status', cellComponent: Status },
   ];
+
+  selectableRow = (row: TableRow): boolean => row['status'] === 'available';
+
+  onSelectedRowsChange(selectedRows: Set<TableRow>) {
+    console.log('Selected Rows:', selectedRows);
+  }
 }

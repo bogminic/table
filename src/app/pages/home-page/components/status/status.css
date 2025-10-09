@@ -10,6 +10,6 @@
   transform: translateY(-50%);
   width: 15px;
   height: 15px;
-  background-color: var(--accent-green);
+  background-color: var(--green-accent);
   border-radius: 50%;
 }

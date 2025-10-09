@@ -1,35 +1,101 @@
 <table [attr.aria-label]="title() ? 'Data table of ' + title() : null">
   @if (description()) {
-  <caption>
-    {{
-      description()
-    }}
-  </caption>
+    <caption>
+      {{ description() }}
+    </caption>
   }
+  <colgroup>
+    @if (rowSelection()) {
+      <col class="select-all-col" />
+    }
+    @for (col of colDefs(); track $index) {
+      <col [style.width]="col.width" />
+    }
+  </colgroup>
   <thead>
+    @if (rowSelection()) {
+      <tr>
+        <th>
+          <input
+            type="checkbox"
+            [checked]="isAllSelected"
+            [indeterminate]="isIndeterminate"
+            (change)="toggleSelectAll($event.target.checked)"
+            aria-label="Select all rows"
+          />
+        </th>
+        <th [attr.colspan]="colDefs().length" class="no-selected-cell">
+          @if (selectedRows.size === 0) {
+            None Selected
+          } @else {
+            {{ selectedRows.size }} Selected
+          }
+        </th>
+      </tr>
+    }
     <tr>
+      @if (rowSelection()) {
+        <th scope="col" aria-label="Select row"></th>
+      }
       @for (header of colDefs(); track $index) {
-      <th scope="col" id="col-{{ $index }}" [style.width]="header.width"  aria-sort="none">{{ header.headerName }}</th>
+        <th
+          scope="col"
+          scope="col"
+          id="col-{{ $index }}"
+          [style.width]="header.width"
+          aria-sort="none"
+        >
+          {{ header.headerName }}
+        </th>
       }
     </tr>
   </thead>
   <tbody>
-    @if (!rowData() || rowData().length === 0) {
-    <tr class="no-data-row">
-      <td [attr.colspan]="colDefs().length" class="no-data-cell">No data available</td>
-    </tr>
-    } @else { @for (row of rowData(); track $index) {
-    <tr>
-      @for (col of colDefs(); track $index) {
-      <td headers="col-{{ $index }}">
-        @if (col.cellComponent) {
-          <ng-container [ngComponentOutlet]="col.cellComponent" [ngComponentOutletInputs]="{ value: row[col.field] }"></ng-container>
-        } @else {
-          {{col.valueFormatting ? col.valueFormatting(row[col.field]) : row[col.field]}}
-        }
-      </td>
+    <!-- No data row -->
+    @if (rowData().length === 0) {
+      <tr class="no-data-row">
+        <td [attr.colspan]="colDefs().length + (rowSelection() ? 1 : 0)" class="no-data-cell">
+          No data available
+        </td>
+      </tr>
+    } @else {
+      @for (row of rowDataWithSelectable(); track $index) {
+        <tr
+          [class.selectable]="row[SELECTABLE_ROW_KEY]"
+          [class.selected]="selectedRows.has(row)"
+          (click)="toggleRowSelection(row)"
+          tabindex="0"
+          (keydown.enter)="toggleRowSelection(row)"
+          (keydown.space)="toggleRowSelection(row)"
+          [attr.aria-selected]="selectedRows.has(row)"
+        >
+          <!-- Selectable row checkbox -->
+          @if (rowSelection()) {
+            <td>
+              <input
+                type="checkbox"
+                [checked]="selectedRows.has(row)"
+                [disabled]="row[SELECTABLE_ROW_KEY] === false"
+                aria-label="Select row {{ $index + 1 }}"
+              />
+            </td>
+          }
+          @for (col of colDefs(); track $index) {
+            <td headers="col-{{ $index }}">
+              <!-- Custom cell component -->
+              @if (col.cellComponent) {
+                <ng-container
+                  [ngComponentOutlet]="col.cellComponent"
+                  [ngComponentOutletInputs]="{ value: row[col.field] }"
+                ></ng-container>
+              } @else {
+                <!-- Default cell rendering -->
+                {{ col.valueFormatting ? col.valueFormatting(row[col.field]) : row[col.field] }}
+              }
+            </td>
+          }
+        </tr>
       }
-    </tr>
-    } }
+    }
   </tbody>
 </table>

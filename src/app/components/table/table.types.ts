@@ -8,6 +8,8 @@ export interface ColDef {
   cellComponent?: Type<CellComponentInterface>;
 };
 
+export type SelectableTableRow = TableRow & { [SELECTABLE_ROW_KEY: symbol]: boolean} 
+
 export interface TableRow {
   [key: string]: unknown;
 }
@@ -15,3 +17,5 @@ export interface TableRow {
 export interface CellComponentInterface {
   value: InputSignal<string> | InputSignal<number> | InputSignal<boolean> | InputSignal<unknown>;
 }
+
+export const SELECTABLE_ROW_KEY = Symbol();

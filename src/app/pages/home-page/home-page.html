@@ -1,3 +1,11 @@
-<section  class="container">
-    <app-table [rowData]="files" [colDefs]="columnDefs" [title]="'List of files'" [description]="'List of files with their device, path, and current status'"></app-table>
+<section class="container">
+  <app-table
+    [rowData]="files"
+    [colDefs]="columnDefs"
+    [title]="'List of files'"
+    [rowSelection]="true"
+    [description]="'List of files with their device, path, and current status'"
+    [selectableRowFn]="this.selectableRow"
+    (selectedRowsChange)="onSelectedRowsChange($event)"
+  ></app-table>
 </section>
