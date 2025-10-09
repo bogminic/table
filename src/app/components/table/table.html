@@ -20,15 +20,15 @@
             type="checkbox"
             [checked]="isAllSelected"
             [indeterminate]="isIndeterminate"
-            (change)="toggleSelectAll($event.target.checked)"
+            (change)="toggleSelectAll($event)"
             aria-label="Select all rows"
           />
         </th>
-        <th [attr.colspan]="colDefs().length" class="no-selected-cell">
+        <th [attr.colspan]="colDefs().length" class="selected-count">
           @if (selectedRows.size === 0) {
             None Selected
           } @else {
-            {{ selectedRows.size }} Selected
+            Selected {{ selectedRows.size }}
           }
         </th>
       </tr>

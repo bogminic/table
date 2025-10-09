@@ -1,7 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 import { ColDef, SELECTABLE_ROW_KEY, SelectableTableRow, TableRow } from './table.types';
-import { NgComponentOutlet } from '@angular/common';
 import { augmentRowsWithSelectable } from './table.utils';
+import { NgComponentOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-table',
@@ -60,7 +60,8 @@ export class Table {
    * Toggle all rows
    * @param checked - boolean indicating whether to select or deselect all
    */
-  toggleSelectAll(checked: boolean): void {
+  toggleSelectAll(event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
     if (checked) {
       this.selectedRows = new Set(this.selectableRows);
       this.selectedRowsChange.emit(this.selectedRows);
