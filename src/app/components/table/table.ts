@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, input, output, signal, linkedSignal } from '@angular/core';
 import { ColDef, SELECTABLE_ROW_KEY, SelectableTableRow, TableRow } from './table.types';
 import { augmentRowsWithSelectable } from './table.utils';
 import { NgComponentOutlet } from '@angular/common';
@@ -35,10 +35,37 @@ export class Table<T extends TableRow = TableRow> {
    */
   readonly SELECTABLE_ROW_KEY = SELECTABLE_ROW_KEY;
 
-  /** Computed table rows with selectable metadata */
-  rowDataWithSelectable = computed<SelectableTableRow<T>[]>(() =>
-    augmentRowsWithSelectable(this.rowData(), this.selectableRowFn()),
-  );
+  sort = signal<{ field: keyof T; direction: 'asc' | 'desc' } | null>({
+    field: 'name',
+    direction: 'asc',
+  });
+
+  /** Linked signal for table rows with selectable metadata and sorting */
+  rowDataWithSelectable = linkedSignal<SelectableTableRow<T>[]>(() => {
+    const baseRows = augmentRowsWithSelectable(this.rowData(), this.selectableRowFn());
+    const sort = this.sort();
+
+    // If no sort configuration, just return the base rows
+    if (!sort) {
+      return baseRows;
+    }
+
+    const { field, direction } = sort;
+    const isAscending = direction === 'asc';
+
+    // Return a sorted shallow copy to avoid mutating original rows
+    return [...baseRows].sort((a, b) => {
+      const aValue = a[field];
+      const bValue = b[field];
+
+      if (aValue === bValue) {
+        return 0;
+      }
+
+      const comparison = aValue < bValue ? -1 : 1;
+      return isAscending ? comparison : -comparison;
+    });
+  });
 
   /** Filter only selectable rows */
   get selectableRows(): SelectableTableRow<T>[] {
@@ -86,6 +113,18 @@ export class Table<T extends TableRow = TableRow> {
     } else {
       this.selectedRows.add(row);
       this.selectedRowsChange.emit(this.selectedRows);
+    }
+  }
+
+  toggleSort(field: keyof T): void {
+    const currentSort = this.sort();
+    if (currentSort && currentSort.field === field) {
+      // Toggle direction
+      const newDirection = currentSort.direction === 'asc' ? 'desc' : 'asc';
+      this.sort.set({ field, direction: newDirection });
+    } else {
+      // Set new sort field and default to ascending
+      this.sort.set({ field, direction: 'asc' });
     }
   }
 }

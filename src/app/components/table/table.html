@@ -44,8 +44,12 @@
           id="col-{{ $index }}"
           [style.width]="header.width"
           aria-sort="none"
+          (click)="toggleSort(header.field)"
         >
           {{ header.headerName }}
+          @if (sort()?.field === header.field) {
+            {{ sort()?.direction === 'asc' ? '↑' : '↓' }}
+          }
         </th>
       }
     </tr>
