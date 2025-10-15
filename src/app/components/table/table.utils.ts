@@ -8,7 +8,7 @@ import { SELECTABLE_ROW_KEY, TableRow, SelectableTableRow } from './table.types'
  */
 export function augmentRowsWithSelectable(
   rows: TableRow[],
-  selectableFn?: (row: TableRow) => boolean | null
+  selectableFn?: ((row: TableRow) => boolean) | null
 ): SelectableTableRow[] {
   return rows.map((row) => ({
     ...row,

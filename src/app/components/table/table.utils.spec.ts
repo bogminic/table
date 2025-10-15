@@ -14,9 +14,9 @@ describe('augmentRowsWithSelectable', () => {
         expect(result.map((r) => (r as any)[SELECTABLE_ROW_KEY])).toEqual([true, false, true]);
     });
 
-    it('treats null returned by selectableFn as not selectable', () => {
+    it('should marks all rows selectable when null is provided instead of function', () => {
         const rows = [{ key: 'x' }, { key: 'y' }];
-        const result = augmentRowsWithSelectable(rows, () => null);
-        result.forEach((r) => expect((r as any)[SELECTABLE_ROW_KEY]).toBe(false));
+        const result = augmentRowsWithSelectable(rows, null);
+        result.forEach((r) => expect((r as any)[SELECTABLE_ROW_KEY]).toBe(true));
     });
 });
