@@ -6,10 +6,10 @@ import { SELECTABLE_ROW_KEY, TableRow, SelectableTableRow } from './table.types'
  * @param rows - original table rows
  * @param selectableFn - optional function to determine if a row is selectable
  */
-export function augmentRowsWithSelectable(
-  rows: TableRow[],
-  selectableFn?: ((row: TableRow) => boolean) | null
-): SelectableTableRow[] {
+export function augmentRowsWithSelectable<T extends TableRow>(
+  rows: T[],
+  selectableFn?: ((row: T) => boolean) | null
+): SelectableTableRow<T>[] {
   return rows.map((row) => ({
     ...row,
     [SELECTABLE_ROW_KEY]: selectableFn ? !!selectableFn(row) : true,

@@ -9,12 +9,12 @@ import { NgComponentOutlet } from '@angular/common';
   templateUrl: './table.html',
   styleUrl: './table.css',
 })
-export class Table {
+export class Table<T extends TableRow = TableRow> {
   /** Data rows to display in the table */
-  public rowData = input.required<TableRow[]>();
+  public rowData = input.required<T[]>();
 
   /** Column definitions for the table */
-  public colDefs = input.required<ColDef[]>();
+  public colDefs = input.required<ColDef<T>[]>();
 
   /** Table title and description */
   public title = input<string>('');
@@ -22,13 +22,13 @@ export class Table {
 
   /** Row selection configuration */
   public rowSelection = input<boolean>(false);
-  public selectableRowFn = input<((row: TableRow) => boolean) | null>(null);
+  public selectableRowFn = input<((row: T) => boolean) | null>(null);
 
   /** Emits when selected rows change */
-  public selectedRowsChange = output<Set<SelectableTableRow>>();
+  public selectedRowsChange = output<Set<SelectableTableRow<T>>>();
 
   /** Internal selected row set */
-  public selectedRows: Set<SelectableTableRow> = new Set();
+  public selectedRows: Set<SelectableTableRow<T>> = new Set();
 
   /**
    * Key to identify selectable rows
@@ -36,12 +36,12 @@ export class Table {
   readonly SELECTABLE_ROW_KEY = SELECTABLE_ROW_KEY;
 
   /** Computed table rows with selectable metadata */
-  rowDataWithSelectable = computed<SelectableTableRow[]>(() =>
-    augmentRowsWithSelectable(this.rowData(), this.selectableRowFn() || undefined),
+  rowDataWithSelectable = computed<SelectableTableRow<T>[]>(() =>
+    augmentRowsWithSelectable(this.rowData(), this.selectableRowFn()),
   );
 
   /** Filter only selectable rows */
-  get selectableRows(): SelectableTableRow[] {
+  get selectableRows(): SelectableTableRow<T>[] {
     return this.rowDataWithSelectable().filter((r) => r[SELECTABLE_ROW_KEY]);
   }
 
@@ -75,7 +75,7 @@ export class Table {
    * Toggle one row
    * @param row - the row to toggle selection for
    */
-  toggleRowSelection(row: SelectableTableRow) {
+  toggleRowSelection(row: SelectableTableRow<T>): void {
     if (row[SELECTABLE_ROW_KEY] === false) {
       return;
     }

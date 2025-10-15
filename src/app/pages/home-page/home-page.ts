@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { File } from './home-page.types';
 import { Table } from '../../components/table/table';
-import { ColDef, TableRow } from '../../components/table/table.types';
+import { ColDef, SelectableTableRow } from '../../components/table/table.types';
 import { Status } from './components/status/status';
 
 @Component({
@@ -58,7 +58,7 @@ export class HomePage {
   ];
 
   // Table column definitions
-  public columnDefs: ColDef[] = [
+  public columnDefs: ColDef<File>[] = [
     { field: 'name', headerName: 'Name' },
     { field: 'device', headerName: 'Device' },
     { field: 'path', headerName: 'Path', width: '50%' },
@@ -66,19 +66,19 @@ export class HomePage {
   ];
 
   // Predicate to determine if a row is selectable
-  readonly selectableRow = (row: TableRow): boolean => row['status'] === 'available';
+  readonly selectableRow = (row: SelectableTableRow<File>): boolean => row.status === 'available';
 
   // Signal to hold selected rows
-  selectedRows = signal<Set<TableRow>>(new Set());
+  selectedRows = signal<Set<SelectableTableRow<File>>>(new Set());
 
   // Handler for when selected rows change
-  public onSelectedRowsChange(selectedRows: Set<TableRow>) {
+  public onSelectedRowsChange(selectedRows: Set<SelectableTableRow<File>>) {
     this.selectedRows.set(selectedRows);
   }
 
   // Handler for downloading selected files
   public downloadSelected() {
-    const selectedFiles = Array.from(this.selectedRows()).map(row => `Device: ${row['device']}, Path: ${row['path']}`);
+    const selectedFiles = Array.from(this.selectedRows()).map(row => `Device: ${row.device}, Path: ${row.path}`);
     alert('Downloading selected files:\n' + selectedFiles.join('\n'));
   }
 
